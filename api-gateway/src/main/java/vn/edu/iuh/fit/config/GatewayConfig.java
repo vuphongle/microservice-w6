@@ -20,6 +20,8 @@ public class GatewayConfig {
                         .uri("lb://product-service"))
                 .route("order-service", r -> r.path("/orders/**")
                         .uri("lb://order-service"))
+                .route("customer-service", r -> r.path("/customers/**")
+                        .uri("lb://customer-service"))
                 .build();
     }
 
