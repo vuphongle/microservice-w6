@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - product-service
+      - order-service
+      - customer-service
+    networks:
+      - microservices-network
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "5001:5001"
+    environment:
+      - DB_HOST=product-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=example
+      - DB_NAME=productdb
+    depends_on:
+      - product-db
+    networks:
+      - microservices-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "5002:5002"
+    environment:
+      - DB_HOST=order-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=example
+      - DB_NAME=orderdb
+    depends_on:
+      - order-db
+    networks:
+      - microservices-network
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "5003:5003"
+    environment:
+      - DB_HOST=customer-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=example
+      - DB_NAME=customerdb
+    depends_on:
+      - customer-db
+    networks:
+      - microservices-network
+
+  product-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: productdb
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  order-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: orderdb
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  customer-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: customerdb
+    volumes:
+      - customer-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  product-db-data:
+  order-db-data:
+  customer-db-data:
