@@ -43,5 +43,5 @@ tasks.named('test') {
 }
 
 bootJar {
-    mainClass = 'vn.edu.iuh.fit.gateway.ApiGatewayApplication'
+    mainClass = 'vn.edu.iuh.fit.ApiGatewayApplication'
 }

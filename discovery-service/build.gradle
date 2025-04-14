@@ -40,7 +40,7 @@ tasks.named('test') {
 }
 
 bootJar {
-    mainClass = 'vn.edu.iuh.fit.discovery.DiscoveryServiceApplication'
+    mainClass = 'vn.edu.iuh.fit.DiscoveryServiceApplication'
 }
 build {
     dependsOn bootJar
